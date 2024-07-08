@@ -115,36 +115,36 @@ def torneio(probab_roleta, pop_bin):
 def elitismo():
     return 0
 
-#def algoritmo_genetico():
-geracao = 0
-convergencia = 0
-limiteconverg = 100
-maximoglobal = -float('inf')
-x = gerarelementos(50, -3.1, 12.1)
-y = gerarelementos(50, 4.1, 5.8)
+def algoritmo_genetico():
+    geracao = 0
+    convergencia = 0
+    limiteconverg = 100
+    maximoglobal = -float('inf')
+    x = gerarelementos(50, -3.1, 12.1)
+    y = gerarelementos(50, 4.1, 5.8)
+    
+    while geracao < 10000 and convergencia < limiteconverg:
+        popBin = gerarElementosBinarios(x, y)
+        imagemFuncao = gerarImagem(x, y)
+        probabRolet = gerarProbabilidades(imagemFuncao)
+        sMelhores = torneio(probabRolet, popBin)
+        pontoCorte = gerarPontoDeCorte(2)
+        s_filhos = recombinar(pontoCorte, sMelhores)
+        s_filhos = efetuarMutacao(s_filhos)
+        popBin = novaPopulação(s_filhos)
+        popDec = novosValoresDecimais(popBin)
+        
+        listax = [ind[0] for ind in popDec]
+        listay = [ind[1] for ind in popDec]
+        
+        maximo = max(gerarImagem(listax, listay))
+        if maximo > maximoglobal:
+            maximoglobal = maximo
+            convergencia = 0
+        else:
+            convergencia += 1
+        
+        print(f"Geração {geracao}: Melhor valor {maximoglobal}")
+        geracao += 1
 
-while geracao < 10000 and convergencia < limiteconverg:
-    popBin = gerarElementosBinarios(x, y)
-    imagemFuncao = gerarImagem(x, y)
-    probabRolet = gerarProbabilidades(imagemFuncao)
-    sMelhores = torneio(probabRolet, popBin)
-    pontoCorte = gerarPontoDeCorte(2)
-    s_filhos = recombinar(pontoCorte, sMelhores)
-    s_filhos = efetuarMutacao(s_filhos)
-    popBin = novaPopulação(s_filhos)
-    popDec = novosValoresDecimais(popBin)
-    
-    listax = [ind[0] for ind in popDec]
-    listay = [ind[1] for ind in popDec]
-    
-    maximo = max(gerarImagem(listax, listay))
-    if maximo > maximoglobal:
-        maximoglobal = maximo
-        convergencia = 0
-    else:
-        convergencia += 1
-    
-    print(f"Geração {geracao}: Melhor valor {maximoglobal}")
-    geracao += 1
-
-#algoritmo_genetico()
+algoritmo_genetico()
